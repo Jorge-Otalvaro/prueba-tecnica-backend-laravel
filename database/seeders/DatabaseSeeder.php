@@ -13,11 +13,32 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call(RoleAndPermissionSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Usuario admin con todos los permisos
+        $admin = User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => 'password',
         ]);
+        $admin->assignRole('admin');
+
+        // Usuario soporte con permisos de notas
+        $support = User::factory()->create([
+            'name' => 'Support Agent',
+            'email' => 'support@example.com',
+            'password' => 'password',
+        ]);
+        $support->assignRole('support');
+
+        // Usuario viewer: puede ver notas pero NO agregar
+        $viewer = User::factory()->create([
+            'name' => 'Viewer User',
+            'email' => 'viewer@example.com',
+            'password' => 'password',
+        ]);
+        $viewer->assignRole('viewer');
+
+        $this->call(PlayerSeeder::class);
     }
 }
